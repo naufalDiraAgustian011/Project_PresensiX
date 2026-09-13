@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+{% block header %}Status Dashboard{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card p-4 shadow-sm">
+            <h5 class="card-title text-primary"><i class="fas fa-desktop me-2"></i> Status Sistem Absensi</h5>
+            <hr>
+            
+            {% if active_sesi %}
+                <div id="timerDisplayContainer" class="alert alert-success d-flex justify-content-between align-items-center status-badge">
+                    <div id="timerDisplay">
+                        <i class="fas fa-hourglass-half me-2"></i> Sesi Aktif. Waktu Tersisa: <strong id="timeRemaining">Memuat...</strong>
+                    </div>
+                    <div>
+                        <button id="pauseBtn" class="btn btn-sm btn-warning me-2"><i class="fas fa-pause"></i> Pause</button>
+                        <button id="stopBtn" class="btn btn-sm btn-danger"><i class="fas fa-stop"></i> Stop Sesi</button>
+                    </div>
+                </div>
+                <h5 class="mt-4">Live Video Feed</h5>
+                <img src="{{ url_for('video_feed') }}" alt="Live Video Feed" class="img-fluid rounded shadow-lg">
+
+            {% else %}
+                <div class="alert alert-danger mt-3">
+                    <i class="fas fa-exclamation-triangle me-2"></i> Tidak ada sesi absensi resmi yang aktif.
+                    <br>
+                    Silakan ke menu **Mulai Absensi** untuk memulai sesi baru.
+                </div>
+            {% endif %}
+            
+            <div class="mt-4">
+                <h6>Langkah Cepat:</h6>
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('manage_kelas_page') }}" class="btn btn-primary"><i class="fas fa-chalkboard-teacher me-2"></i> Kelola Kelas</a>
+                    <a href="{{ url_for('select_class_form') }}" class="btn btn-warning"><i class="fas fa-play me-2"></i> Mulai Sesi Baru</a>
+                    <a href="{{ url_for('enroll_mahasiswa') }}" class="btn btn-success"><i class="fas fa-user-plus me-2"></i> Daftar Mahasiswa</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block script %}
+<script>
+    // Logic ini disuntikkan ke base.html dan dieksekusi HANYA jika ada sesi aktif
+
+    let timerInterval;
+    let stopPolling = false;
+
+    // FUNGSI UTAMA POLLING STATUS
+    function pollTimerStatus() {
+        if (stopPolling) return;
+        
+        fetch('{{ url_for("status_timer") }}')
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    console.error("Gagal mendapatkan status timer:", response.status);
+                    document.getElementById('timeRemaining').textContent = 'ERROR (Check Console)';
+                    stopPolling = true; 
+                    return { active: false };
+                }
+            })
+            .then(data => {
+                const timeRemainingElement = document.getElementById('timeRemaining');
+                const pauseBtn = document.getElementById('pauseBtn');
+                const displayContainer = document.getElementById('timerDisplayContainer');
+                
+                if (data.active) {
+                    // Update Timer Display
+                    let totalSeconds = data.remaining;
+                    const minutes = Math.floor(totalSeconds / 60);
+                    const seconds = totalSeconds % 60;
+                    timeRemainingElement.textContent = 
+                        `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+                    // Update Pause Button State
+                    pauseBtn.textContent = data.paused ? '▶️ Resume' : '⏸️ Pause';
+                    pauseBtn.className = data.paused ? 'btn btn-sm btn-primary me-2' : 'btn btn-sm btn-warning me-2';
+                    
+                    // Update Status Visual
+                    displayContainer.className = data.paused ? 'alert alert-secondary d-flex justify-content-between align-items-center status-badge' : 'alert alert-success d-flex justify-content-between align-items-center status-badge';
+
+
+                } else if (data.active === false && timeRemainingElement.textContent !== 'Sesi Selesai.') {
+                    // Session Ended (Otomatis atau Manual)
+                    stopPolling = true;
+                    timeRemainingElement.textContent = 'Sesi Selesai.';
+                    displayContainer.className = 'alert alert-danger d-flex justify-content-between align-items-center status-badge';
+                    alert("Waktu absensi telah berakhir secara otomatis.");
+                    window.location.reload(); 
+                }
+            })
+            .catch(error => {
+                console.error('Error in fetch/JSON parsing:', error);
+            });
+    }
+
+    // Event Listeners untuk Tombol Kontrol
+    document.getElementById('pauseBtn')?.addEventListener('click', () => {
+        fetch('{{ url_for("control_pause") }}', { method: 'POST' })
+            .then(response => {
+                if (response.ok) pollTimerStatus();
+                else console.error('Gagal mengontrol pause/resume.');
+            });
+    });
+    
+    // Tombol STOP Sesi (Memanggil endpoint POST di backend)
+    document.getElementById('stopBtn')?.addEventListener('click', () => {
+        if(confirm("Yakin ingin menghentikan sesi sekarang? Sisa ALPHA akan dicatat FINAL.")) {
+            fetch('{{ url_for("control_stop_session") }}', { method: 'POST' })
+                .then(response => response.json())
+                .then(data => {
+                    if(data.stopped) {
+                        alert("Sesi Berakhir: Semua mahasiswa yang tidak terdeteksi ditandai ALPHA FINAL.");
+                        window.location.reload(); 
+                    } else {
+                        alert("Gagal menghentikan sesi: " + data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error saat menghentikan sesi:', error);
+                    alert("Terjadi kesalahan jaringan/server saat menghentikan sesi.");
+                });
+        }
+    });
+
+
+    // Mulai Polling saat halaman dimuat jika sesi aktif
+    if (document.getElementById('timeRemaining')) {
+        pollTimerStatus(); 
+        timerInterval = setInterval(pollTimerStatus, 1000); // Polling setiap 1 detik
+    }
+</script>
+{% endblock %}

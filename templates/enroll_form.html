@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Pendaftaran Mhs{% endblock %}
+{% block header %}Pendaftaran Mahasiswa Baru{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        
+        {% if success_message %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <i class="fas fa-check-circle me-2"></i> Pendaftaran Mahasiswa Berhasil! Data embeddings telah disimpan dan model absensi siap digunakan.
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+        {% endif %}
+        <div class="card shadow-sm">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-user-plus me-2"></i> Input Data & Sampel Wajah
+            </div>
+            <div class="card-body">
+                <form id="enrollForm" method="POST" action="{{ url_for('process_enrollment') }}" enctype="multipart/form-data">
+                    <h5 class="text-primary mb-3">Data Mahasiswa</h5>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="nim" class="form-label">NIM</label>
+                            <input type="text" class="form-control" id="nim" name="nim" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="nama" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" id="nama" name="nama" required>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="kelas_id" class="form-label">Pilih Kelas</label>
+                        <select class="form-select" id="kelas_id" name="kelas_id" required>
+                            {% for kelas in kelas_list %}
+                                <option value="{{ kelas.id }}">{{ kelas.nama_kelas }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <h5 class="mt-4 text-primary">Sampel Wajah (Min: 5, Max: 20 Foto)</h5>
+                    <div class="alert alert-info small">
+                        Pilih minimal 5 dan maksimal 20 foto wajah berformat JPG/PNG.
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="sample_photos" class="form-label">Upload Foto Wajah</label>
+                        <input class="form-control" type="file" id="sample_photos" name="sample_photos" accept="image/jpeg, image/png" multiple required>
+                        <div id="fileHelp" class="form-text">Pilih 5 hingga 20 file gambar.</div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" id="submitButton" class="btn btn-success btn-lg">
+                            <i class="fas fa-save me-2"></i> Daftarkan & Hitung Embeddings
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Logic validasi JavaScript minimal 5 file sebelum submit
+    document.getElementById('enrollForm').addEventListener('submit', function(e) {
+        const fileInput = document.getElementById('sample_photos');
+        const fileCount = fileInput.files.length;
+
+        if (fileCount < 5) {
+            e.preventDefault();
+            alert(`Anda harus mengunggah minimal 5 foto. Saat ini: ${fileCount}.`);
+        }
+        if (fileCount > 20) {
+            alert(`Maksimal file yang diunggah adalah 20. Sistem hanya akan memproses 20 file pertama.`);
+            // Tidak perlu preventDefault karena backend akan menangani pembatasan
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Mulai Sesi Absensi{% endblock %}
+{% block header %}Pilih Kelas untuk Sesi Absensi{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                1. Pilih Kelas untuk Absensi
+            </div>
+            <div class="card-body">
+                {% if not kelas_list %}
+                    <div class="alert alert-danger">
+                        Belum ada Kelas yang terdaftar. Silakan <a href="{{ url_for('manage_kelas_page') }}">Buat Kelas Baru</a> terlebih dahulu.
+                    </div>
+                {% else %}
+                    <form method="GET" action="/absensi/preview/{{ kelas_list[0].id }}"> 
+                        
+                        <div class="mb-3">
+                            <label for="class_id" class="form-label">Pilih Kelas</label>
+                            <select class="form-select" id="class_id" name="class_id" required onchange="this.form.action='/absensi/preview/' + this.value">
+                                {% for kelas in kelas_list %}
+                                    <option value="{{ kelas.id }}">{{ kelas.nama_kelas }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <button type="submit" class="btn btn-info w-100">
+                            <i class="fas fa-eye me-2"></i> TAMPILKAN PREVIEW LIVE
+                        </button>
+                    </form>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

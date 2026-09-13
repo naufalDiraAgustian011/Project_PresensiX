@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Kelola Kelas{% endblock %}
+{% block header %}Manajemen Kelas{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-5">
+        <div class="card shadow-sm mb-4">
+            <div class="card-header bg-success text-white">
+                <i class="fas fa-plus-circle me-2"></i> Buat Kelas Baru
+            </div>
+            <div class="card-body">
+                <form method="POST" action="{{ url_for('create_new_class') }}">
+                    <div class="mb-3">
+                        <label for="nama_kelas" class="form-label">Nama Kelas (Contoh: TI-Pagi)</label>
+                        <input type="text" class="form-control" id="nama_kelas" name="nama_kelas" required>
+                    </div>
+                    <button type="submit" class="btn btn-success w-100">Simpan Kelas</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-7">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                Daftar Kelas Aktif ({{ kelas_list|length }} Kelas)
+            </div>
+            <ul class="list-group list-group-flush">
+                {% for kelas in kelas_list %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        {{ kelas.nama_kelas }} (ID: {{ kelas.id }})
+                        <a href="#" class="btn btn-sm btn-outline-danger disabled">Hapus</a>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

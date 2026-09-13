@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Detail Log{% endblock %}
+{% block header %}Detail Absensi Kelas {{ kelas_nama }} (Sesi #{{ sesi.id }}){% endblock %}
+
+{% block content %}
+<a href="{{ url_for('rekap_absensi') }}" class="btn btn-sm btn-secondary mb-3">
+    <i class="fas fa-arrow-left me-2"></i> Kembali ke Rekap
+</a>
+
+<div class="card shadow-sm">
+    <div class="card-header bg-info text-white">
+        Ringkasan Sesi
+    </div>
+    <ul class="list-group list-group-flush">
+        <li class="list-group-item"><strong>Waktu Mulai:</strong> {{ sesi.waktu_mulai }}</li>
+        <li class="list-group-item"><strong>Waktu Selesai:</strong> {{ sesi.waktu_selesai if sesi.waktu_selesai else 'Belum Selesai' }}</li>
+    </ul>
+</div>
+
+<h5 class="mt-4">Status Kehadiran Mahasiswa</h5>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>NIM</th>
+            <th>Nama</th>
+            <th>Status</th>
+            <th>Waktu Absen</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for detail in details %}
+        <tr>
+            <td>{{ detail.nim }}</td>
+            <td>{{ detail.nama }}</td>
+            <td>
+                {% if detail.status == 'HADIR' %}
+                    <span class="badge bg-success">HADIR</span>
+                {% else %}
+                    <span class="badge bg-danger">ALPHA</span>
+                {% endif %}
+            </td>
+            <td>{{ detail.waktu_absensi }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

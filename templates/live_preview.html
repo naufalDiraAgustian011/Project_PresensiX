@@ -1,0 +1,53 @@
+{% extends "base.html" %}
+
+{% block title %}Preview Absensi{% endblock %}
+{% block header %}Preview Absensi Kelas {{ kelas.nama_kelas }}{% endblock %}
+
+{% block content %}
+<div class="alert alert-info">
+    <i class="fas fa-eye me-2"></i> Mode Preview Aktif. Wajah dikenali (kotak biru), tetapi TIDAK dicatat.
+    (Ambang Batas FaceNet: F <= {{ threshold }})
+</div>
+
+<div class="row">
+    <div class="col-8">
+        <h5 class="mb-3">Live Stream Preview Pengenalan</h5>
+        <img id="videoElement" src="{{ url_for('video_feed') }}" alt="Preview Live Video" class="img-fluid rounded shadow-lg">
+    </div>
+    
+    <div class="col-4">
+        <h5>Pengaturan & Mulai Resmi</h5>
+        <div class="card p-3 shadow-sm">
+            <h6 class="card-title">Kelas: <span class="badge bg-primary">{{ kelas.nama_kelas }}</span></h6>
+            <hr>
+            
+            <form method="POST" action="{{ url_for('start_official_session') }}">
+                <input type="hidden" name="class_id" value="{{ kelas.id }}">
+                
+                <div class="mb-3">
+                    <label for="duration" class="form-label">Durasi Sesi (Menit)</label>
+                    <input type="number" class="form-control" id="duration" name="duration" value="30" min="5" required>
+                    <div class="form-text">Mahasiswa harus terdeteksi dalam durasi ini.</div>
+                </div>
+
+                <button type="submit" class="btn btn-danger w-100">
+                    <i class="fas fa-play-circle me-2"></i> MULAI ABSENSI RESMI
+                </button>
+            </form>
+        </div>
+        
+        <div class="card p-3 shadow-sm mt-3">
+            <h6 class="card-title"><i class="fas fa-users me-1"></i> Mahasiswa Terdaftar</h6>
+            <ul class="list-group small list-group-flush" style="max-height: 250px; overflow-y: auto;">
+                {% for m in mahasiswas %}
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <small>{{ m.nim }} - {{ m.nama }}</small>
+                        </li>
+                {% else %}
+                    <li class="list-group-item text-muted">Belum ada mahasiswa di kelas ini.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
