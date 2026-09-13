@@ -19,8 +19,8 @@ Pastikan kamu sudah menginstal **Python 3.10 atau 3.11** di komputermu. Buka ter
 
 ### Untuk Pengguna Windows:
 ```cmd
-git clone [https://github.com/username-kamu/CAPSTONE_ABSENSI.git](https://github.com/username-kamu/CAPSTONE_ABSENSI.git)
-cd CAPSTONE_ABSENSI
+git clone [https://github.com/naufalDiraAgustian011/Project_PresensiX.git](https://github.com/naufalDiraAgustian011/Project_PresensiX.git)
+cd Project_PresensiX
 python -m venv .venv
 .venv\Scripts\activate
 python -m pip install --upgrade pip setuptools wheel
