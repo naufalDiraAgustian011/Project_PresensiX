@@ -1,0 +1,193 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.0
+-- https://www.phpmyadmin.net/
+--
+-- Host: localhost:3306
+-- Generation Time: Oct 14, 2025 at 12:48 AM
+-- Server version: 8.0.30
+-- PHP Version: 8.1.10
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Database: `absensi_mahasiswa`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `kelas`
+--
+
+CREATE TABLE `kelas` (
+  `id` int NOT NULL,
+  `nama_kelas` varchar(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `kelas`
+--
+
+INSERT INTO `kelas` (`id`, `nama_kelas`) VALUES
+(1, 'TI-Pagi');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `log_absensi`
+--
+
+CREATE TABLE `log_absensi` (
+  `id` int NOT NULL,
+  `nim_mahasiswa` varchar(50) NOT NULL,
+  `waktu_absensi` datetime DEFAULT NULL,
+  `sesi_id` int NOT NULL,
+  `status` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `log_absensi`
+--
+
+INSERT INTO `log_absensi` (`id`, `nim_mahasiswa`, `waktu_absensi`, `sesi_id`, `status`) VALUES
+(15, '01', '2025-10-14 05:34:26', 15, 'HADIR'),
+(16, '02', NULL, 15, 'ALPHA_FINAL'),
+(17, '03', '2025-10-14 05:34:25', 15, 'HADIR'),
+(18, '01', NULL, 16, 'ALPHA_FINAL'),
+(19, '02', NULL, 16, 'ALPHA_FINAL'),
+(20, '03', '2025-10-14 05:39:18', 16, 'HADIR');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `mahasiswa`
+--
+
+CREATE TABLE `mahasiswa` (
+  `nim` varchar(50) NOT NULL,
+  `nama` varchar(255) NOT NULL,
+  `kelas_id` int NOT NULL,
+  `embedding` longblob
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `mahasiswa`
+--
+
+INSERT INTO `mahasiswa` (`nim`, `nama`, `kelas_id`, `embedding`) VALUES
+('01', 'ZHAFA', 1, 0x80059576080000000000008c126e756d70792e636f72652e6e756d65726963948c0b5f66726f6d62756666657294939428960008000000000000f604883d353c49bdb95c89bd10aa163d0070de3b609d673c9db217bdb75d173b395849bc918c10bcc0c407bc10e2023b49d14bbcd1a691bc9112733df98499bc574a993d6f284d3d41c8bebc6d64313c792dab3bd167223ddb51683d40c131bc43a5edbcc3c52f3d851bf73c7eb5863cc1cd3b3dddf77bbd2021d5395154a93d434a22bc6b12a33c7f684a3c514258bca90fd4bb29fc4bbd80d949bd9556af3b2f0297bb89052ebdd99a133b098ba6bda6442a3cac3187bcd121723d8940adbc80ba14bdc4ad343c51a2233dfded333def353c3d87a743bccd5a1ebdd57d5dbc76e805bdf956773d55a9ab3d8b5ad13c4737f4bc2fe8133d634f96bdbba84cbccbd7babb3037253d6f627a3c5329dabbc1002f3ca5b66abc8f63d5bcfa238abb770705ba0c98363d2d9a353d15a127bd216a14bcd3b73abdaf38a7bded6669bbdf38903ceb0fe43cd10a94bb91624abc472b873a2f12a5bc2a4e883c10744c3d708a8bbd5330d63c686d8fbb8e1382bb3447ce3db3d2a0bc7ddf4c3a57dd593d0d6f2f3af8f2ea3ca5c714bd9f9360bc534fc4ba4832953c14b8053df5e3e9bc65371e3cffb21abd3023bb3c3df2acbd9e2b1fbd55fd22bb907c013d078325bd4dd098bda9f836bd53c661bc23ec05bd95e7283dda7d82bdb824eebc7b3eb83d85219ebc7fb44f3d81b16dbd1326213c171236bd585b60bd4149693d630311bd331ea03c58246cbd6bf27fbbb833053a9ce99d3cd76c1bbd1d2daabd27f27c3cb77da5bc64a740bddb97843ddee2883cc7c3253d413fa73cd837a8bb16d6293db7bd753d99d546bde73b9ebd51bf45bdaf81a93d1f18c63c0a54073dc0c5503d6dd7083b21167b3d63ce3c3dc729a5bdb5a679bc879446bc5fbc073dd82e92bdc632203d114c79bb62bc0e3c7bb25b3db7948e3d2686a73bb0c3e2bc08aafbbc313912bc73e4e93be0bffabcfcb64e3dbde438bd313884bd53da12bc52d127bcd8f94bbd13a7323d91ceb5bcbad2123d386f2cbd958e12bc4e6a95bd1d5d513b322b973c7ed60a3de53234bd13cbfabb13b57e3beb0bbd3d496d213da522a53b9023ee3c992ab8bb659ec939afe7033ddd79f2bbb54b4e3c856555bc9409adbc5010793dcd53683ccd57aebb4ffc803b0ca8443cd75809bdaf1342bc4f4ed8bc57314cbd20ffd93db02b883cbdf5713be524dabc105f3b3dcf452dbd31838d3d5b81a9bb915ca7bc058186bde7c2393c7525d03c1c56e5bc0dcad4bc7093f8bb7993edbb4902433b87cfa8bcafdca33c30ccdc3c15e53f3de9167e3d24ec66bd2dc5e33c0d7b88bd6c27e9ba0d5db6bb84c9a1bc98968fbacdee773d83e987bdbffebb3cdbc041bcc1ad4c3d0beffabc3533db3cb7e8453da7fd5cbc8dcd863cc530283ce8582f3d92e81ebd532b803ce0c2b63ce45d5bbdf9a3c23c373034bd494c1d3d387407bd947a513d8c39adbcec4cb6bced2007bc98a4c43cfd4670bdefefe73c84eac0bd73ffefbc9b7cb23cbd790bbc2d6360bd44b38a3bd3c0973d45a7093d94e991bba9f2f83ce5e5e6bcab609ebdec641a3bec1c9ebc74ed9a3d8b25953b4f2fcdbb413921bd480157bdb19dd5bb425814bdd6bc98bb362a983c600f4cbdbc6783bc18e055bbbfc6293dc8e83c3d80f138bd9914d3bc875983bc2176253c0858fe3bcd0b053ddd5179bc9db5933d748d2abd70e8a6bada85173c6f9d053dc0966cbdf15a6e3c1f5690bcf089763c4f6e8fbb250116bd6448113da52d40bd859c32bd653e1e3c154a843d6f6af33beb0f2a3c8f6ebd3d23f726bdf4bf9f3d0b6faabd505cb8b9cccf8d3c996584bc4f6c43bdeb873bbd9aaaa73c956a40bc8bef2b3de6d704bd7872823ddbdc1e3d381bae3b5e8a8ebc4197153d75080ebd6fa280bd4c4a333c037f12bdc0a12e3d5dc969bc748454bd24f7cabc2ea0953dfc5b1e3c94a8143d681b433db30e4b3dc2cb003d20d7b33c93988fbd9480dabc37c3fb3cd9c1203dcba80b3d25a6bb3c54e8233b64ad06bd7dffa73d35a70bbc9bee8bbc3d1238bd9b6b3abdf185d5bce4f0063c791ea03c3d63b4bc53b8ff3bef1684bd87c3d2bcc92cb53cfab894bd71d7923c25078a3968599f3df89260bd1f1dab3d710d2dbd75a648bc6536f8bd95b46b3c95bec2bca552c53c2058633d9f5a02bd934602bdcce288ba8bc19a3b41c0e4bc91c94abd2c05a03d4dcac53cdf86e13acd3bcabba563013c93038b3c06ce953de55ea23c813851bc4d57183c43cb57bcaba114bbeda2893cc79a31bd29aa44bd61cc8ebc183f31bd81b4d5bcd863fabc898db63da55c76bd6bfd543d106b6e3c05662cbd7427853c740e763dbe11853c5bc240bd93ce24bdb32b583d4594a83c5d45d2bb29f98e3d45d230bd63bdcbbc98a3a73c9717f43c440944bc2d729abdef9984bd0353663c554f41bcec11a9bd376b1b3c6cd85d3ce7bc9d3c10d372bca604943c04e22cbd44045c3a81831b3df83c623c01f5593d1b52053ca024aebcb05ebe3cafc10b3d3059c2ba4c978f3cf046543c67e4313d0cbc973c4d84a2bbd104e23c71b5af3c5bffeabc294b1e3d8bc0b13d800e8b3d348613bd8cac073d8c6ad6ba5d0596bcc32d843c982cfbbc670ee5bc6ba695bce07c9c3d3373813daa93223d170e423d65bbb93c39efc63c3783373c01eacb3c97b15d3c0d4789bd1383963d5d4d7a3ca11f0fbab0f76e3cf5a1bb3ccdec54bbd011c73c9d02b5bded241ebdf8c0753dd794083dbb1ea6bd0c39e43cf8d5fdbcf88bbb3c5d5ecc3cb9c48b3d356ecabc058c663d05e8f4bb171b2d3d2025b03b183f79bcfd35b83c3f1085bd0373483c4bdec2bcb10c563b9d8c4bbb894215bdd976d4bcedfd0f3dd196a43cee88033c948c056e756d7079948c0564747970659493948c02663494898887945294284b038c013c944e4e4e4affffffff4affffffff4b007494624b014d000286948c014394749452942e),
+('02', 'KHOIRI', 1, 0x80059576080000000000008c126e756d70792e636f72652e6e756d65726963948c0b5f66726f6d6275666665729493942896000800000000000033a0f53cfffeb0bc96cf55bcc78da03c8fa1393bfc1ebf3ce7fda8bc6c1588bc1079e1bc0748bd3caa476d3d63cd603b599cb03c3ffb713c9fdcd23c9a904a3c0f00473d27ad8e3d9c0396bdba69683d1036713bb76a60bcdd25de3c7d1035bddaafedbc17c8193937bea93cfa50cdbce307f23bdab348bd70d2653d4a63783d48d62fbc6a99e43def6e43bdb1dd7bbddabc65bc246ca4bd49a067bd9017e03cf93d50bc76347bbd6f35ebba6b4a043d77a082bb7222903c41e0953d9d02c23c0d3c40bc0f9c08bbc399283c60c12c3d3fe5943da681e73ccf52373dde6b16bdfcfc2bbdda449fbc46cb3f3cff85af3ba367b3b83b7c263d017c45bdd795de3b06420a3d45f91ebc464434bd292ff6bc47d7f43c2fad9abbddc1f4bc5cf24cbb41c808bddae0e83c36faf53c0a88343d6783a1ba826f8fbd063c2dbda98a0fbd8cd7fb3897955e3bc99e93bc5be326bc7063f53a47a2af3c11b4d03cac2ac73c0c5f82bc591134bb85cf1ebdb77cb3bc7d204d3c7af0fa3c83c68539ffa1483dacbfe7bcbdc8e13c1179f13c07874c3c5854b13c760c4d3df19b023d6a330abd9fe6c5ba8ce6bc37fcedbabc2cadb2bd7d8a8ebd5d598ebc29c0fb3b2585abbc10178fbd52fb07bddb2625bda3338d3d3a1f943adcbe14bdc3401dbd77cb4a3d09d72a3dbf12e23cf9d39cbc6882253deaf203bd40d736bdba540b3d730c81bd73d3583d36597ebd1a4de03c7cc4623c8c0cafbcdd26a7b85af06ebc0dca25bd97ffe1bc3c25e4bdb1cf68bb0c5774bca005d63cbf2f3d3d7dff16bdf7cc52bcd700853d1e2c173b11f1ce3b21c54fbcd9a8b93b703f563c2368573a39140d3cc18451bcad87a13d5cb7513c6a8665bd41320ebd06583dbc3dcf423c461fbcbde3b9bb3c4d32593da7391abc8c793c3dc4ea6b3d7406c83cd17c8abd0164193d49d6fcbc03e1ebbc5e5f373c3401753d7c3c65bc2bab093b3fb2f8bcf4d9b0bb396593bd51fe783d74fd80bd11ea8e3dd0d9a93c5946323cfab1d93be023463a9c02b83d3ae80d3c62eeb43cea1658bc5f1c213b2ce80dbc7fae98bcfca5193d9ac8df3c13fee4bc919f1abd04612dbbafc689bc01b92fbd41ecf53cc350f5bb5ea9b83d1716b3bc99dbe53cefc3a5bca65af6bb63525abdc7ddedbc51192b3b12bc1abd7498b03d2a951cbc0816903cbc5b803be944003d51d91ebd3a3e6e3d7ce4503de496543b9c74f1bb2689e1bcd635643c83c475bc3c595a3dfb3c803ccaf12d3d34ae0d3ca98aa53ac6e7463cc356ef3cffb1103b11f1e73b2c3331bd188f0c3de384a4bcea3a833b1c1f84bb6a0018bd06cf653c7124bf3d501ad23b32e7153d19f2fdbb1dcacdbb29cdb2bb8027dd3b8c663c3d803c31bc819311bc0a35913c49f78a3c571abbbc9dd1873c3c3ca43d060709bdfd74e43cb040afbb23a0e33c8a3d633c9fd5043daa3dd43a4afda9bcb5d234bd6704b83c30a0dfbc269bd6bc20619abd1288b03b4701d8bc9a224f3c964f5bbd60df323d8fb4033d2af1e53b70052bbd5809373d7366833d15ca2ebdefd40d3c845883bc4382b13dedadb43bfff774bde17764bdd707c33c5834883b04de9ebab77656bc04d40ebd67232fbd4048cd3c39005d3be413753dc48f063df65dadbbbdc6cf3b0ff5dc3ce33785bdd1273dbd11e2043d264ef7bb61106d3d70c947bc938e7f3c5a45433c863cb03d9d3350bd2883003d8611c53c0102a8bd410215bd14597abd5cbcecba64add7bb140936bcfa6fe93c96f4ea3ce40cf4bced0f11bc6cd3b03ddae0d73c8eb9a33b530c41bd8ffbff3be0160d3cd6a6e1bca143debc892e6ebc8b76273d386a10bcc0c5533de7aa8cbc5450de3c641ed3bc69b02cbaf4f9843b4f57923d1448633d11a27bbd7f2590bc965d2d3bf3819dbc67cb27bd1d775ebb21da19bcb9617e3d3113ea3c2965273c23c24d3d74f3df3cf01d3e3ddc37e43c9f6d2abd3600fe3c407c893c6071d33d8a0e3c3d1363abbcaaae12bdbce764bd2f51983dabde9abca122b4bd841bfbbc539952bd53fc56bc4a6abd3c643725bde46f2d3d3abfa63bdc50c4bc0357fd3c00ae233a79b0e83af7513abcdab5f7bc1832273d538376bdbbb62f3d46c3f5bbfa8df6baeb7587bd79eee6bb2990dcbce9fa11bd2154aabc36b9c5bc5f8619bb8c409c3b2a04873c891f8b3c4f79a0bd4fb5f03ccccab5bc8f277f3dff6609bd038df93bb09a34bda6505e3d7b352b3d0a51a5bdbabfc23c5bf0ab3c378dac3df18e05bd752e27bd7125e4bcae1d3a3cbd9fd33bea3c65bd89eb74bcd7eb283d76213dbd9b76883d232a8d3c193275bdc389f6ba1c5e013d1dd6d1bbd6612b3d3c96e3bc9198c23cb00d573c30c363bdb9268f3d5333703c192d0a3c690dc2bcb38a763cec72523d60b672bd64f0e8bca75757bc89184fbc972c5dbd0317e73c56e0f43bb7a3cebb64e01fbd6f2eb7bc5e4d86bc546c24bd5144893cb1002cbd90584b3d11a74cbb619e91bbb7d2103d4b8233bd77110bbb6fa2873a62ea15bbc6e63d3dc55e353dbcddc7bba3f7e7ba7308c2bc902310bd1bc1343d33b5223d7cba853d81eb13bcd48b6f3de3d3713d26fe4b3c3c00963a1495b63bd1812fbb114dd6bcb617683d2383213d7479fd3c6149f03ccf2de7bcd252223d6d092fbdb71dc5bce949f5bbe24e22bd1c27203d6f3633ba5914343c047f64bcf13c94bce15836bc261ead3bb1b94cbdccaf003c0917043deac1213dcb038abd493d43bddcc13fbd1a87023de932933d27ffa53ba5929bbdec97fb3c2699da3bbf696e3d9511033d9ff7aabce77b01bd275f51bdc6fc88bc362c8bbd4498c63c3f6e923cd3e4bf3b8fc8033c46878abc34f7da3ca605b23c948c056e756d7079948c0564747970659493948c02663494898887945294284b038c013c944e4e4e4affffffff4affffffff4b007494624b014d000286948c014394749452942e),
+('03', 'NAUFAL', 1, 0x80059576080000000000008c126e756d70792e636f72652e6e756d65726963948c0b5f66726f6d62756666657294939428960008000000000000f3b3db3c8ca06fbcab5a7dbd1cd0493de4e6f6ba89cbc03cb2c74fbc73f5953c303901bd7ec873bb07279d3c4250a33badee243d65fd4fbdbd24c1bc7af71d3d97ad383d85b47a3dd07012bdbd1f3c3d5432dc3a8e7253ba6054eabc44682dbd6792a33c13c5a8bc7b90683d7826073cddd5b03ce43323bd05f0853dc9e7463de0c181bcfcafab3da0d25cbb76b4dcbc92214d3b3cbdb7bd543d1dbde99b613c87b2f53ca5dd5fbd1edc1e3d702d4cbd1cf2c5b865e6f63c640ac23b3775ddbc6e83693cf1bc273b88852c3d01de25bb272b893d33e9ac3ca1f692bc10ea5abd2f9105bd5cb41e3cf71a913c02dfc53b1f5f113dd231893dcb0dccbc9dcce23cf029bfbcce98de3cf151093d4b3473bc1bcb153dcad38cbc49197bbc2aa636bd0c8611bd9c488f3d00fef13c72d3673c352dd3bcc3d125bcc83e2fbd5a5453bd0947913c391ccc3c0c4682bc5c5e10bd658bdf3bceecbdbacecc723d0007663cc4ede3bb611bcb3cce6dfabc0cdd26bad9298e3b7e62073bc351ca3cd070923d6d37993cc1e9bebc74fb89bd7ed9453d0f5d96bc2035c03cf0fa1c3d500ef7bccc5e77bd8b26efbcf946f43c5b056ebdde491bbdf97c2d3db466d33c5fa544bd45f427bd9fdda9bc6ce542bcf0629ebbee83dbbc2200fb3b0d5b3ebc6702bb3d19ca333c4c7bdd3c80550bbdd7c3793b9cca75bdeee6e2bcc83c1b3d922af9bc095d40bc8b214dbd8691a73c2cb8c8bc972b19bd4cb51fbdd2c39bbc07c8253cb2aa753c9c9b88bd84713cbb51deb53c3009493dacd55fbcffea03bdb4e4393c0188053d1ed31cbde430edbca659bd3b8d09883d5510f1bc9955b93c2893033d693c2abce0186a3dbf8e5e3d65b066bd0c6887bbec3508bccc2c1b3c8b53663ca432563cb5b9553d1520b53ccaf2163dc51b193da4c92d3ca7c454bdaed4b5ba6685893cf1184e3b92613bbd8c97d43d96451dbc12e3a1baa323ba3cee0a4c3cacbbbabc1fa31d3d8cf635bde5ddff3b700064bd730b073d26b0e1bc14879e3ca471093d1c2b303d5cbeef3b27fdf5bca0523e3cfce0233db21e42bcba7b3f3cc88c0c3d7cabd5bcc1093cbc5b825abcbcdd0fbc912113bcfde1153dffb092bc56e44b3d6c21f2bc6b37a1ba070cd83cfb8c013d2a334fbd28a449bd1000773cf8a793bd0a20a13d4c8b16bcc2d4053c493179bb8e82213de769b4bc6cb69b3d3c8473bcf712d03ceba53ebc6ee2abbc8c66603da16880bca48283bc64902a3d192a9e3c47882b3ca08ce33c0928cfbc80c1bb3af4f9be3cdd463e3d75b700bd4a6da03d911b86bd2c8d76bc1204193d451b1ebd324a553bfb39303dc761fb38e5fe553c0eb8173d8abe81bb3476cfbca34d203dde04323c6bfa8b3cbbde68bbd7c1f23cfc74583ce463c8bdbca5c6bb9071323d9c979dbcc06bfd3c1ce0a0bc2185893dd15612bde250b93c18114b3db7c7e5bcf414ba3b23f4cbbc0288c3bdd9db973ab7dcb1bde23033bde5ae6e3cbc45c53bcee592bd17161b3cde34d13cbe19e63cf51ceebc83ac963db92d533d18491abd8c0538bdd470c9bc3d5a8b3d00d141bca7c188bccf70ccbc44e48b3c696a7bbc2c0130bda54ae5bb4558d53b468085bdb72c113d6704aabc2951e63c6cf287bb6d911bbd50b7513cfbc6ad3be447283cd505213d94cc583c38b6363b91528d3dd49448bd2a28863c8b0aae3b0416f43ca02b02bce7bdf93b212487bc1a2bcebc107128bd44deaabc3465563c5d259ebc2d7fccbcaa485f3b2c78533c00583cbaf73c98bcb487cd3d9ca0c0bcae16933d8445dabd155ec2bb9f23c6baa597403cc244efbc08162f3c50e53a3b98cc15bcd219d63c512c85bc3b19083d4767a43af27201ba190c083db74bcf3d5caf063d4be1a0bd77bfdf3babcefd3bdf265b3cfc3932bd0ce9c53cd26b4bbd53b7303d156c093a9cdd103d19092f3de46894b9824e6e3dfc2e42bc72498fb97425813cd9a6913d003c503daed76cbb7468343d68c0573c74b6ecbbc6721d3dd3b6513c8bef76bd8c90a5bcf0e192bde50520bc7df3003d8c4d09bd5a3fca3c4524d2bc4e06fdbc2ea4f03ca70ba2bb264b38bdafcc1e3c1c16d7bc2b49f03cd03be0bc97d07b3dcc6211bd57752abb4c995ebda5cd623dc215be3bc73a57bd62c603bc420737bdc33c27bd30af6e3b40aa9b3c2a9d3e3c67b069bd245d5e3d39bc6dbd44255b3a5b5804bde000293ca704a7bcc46b963d2962243d5fb2dfbb246b043dc2ad24bc2435f63b39f84bbc7b2303bd74f39fbcec11a33ce1e69b3c897a303b3ee18bbd84c8683d045678bdb2b0a73dd7aa293b86f052bd9a5927bd85d9f33c0b11963cceea29bc5c8908bc4538003db430533d5153cebc7f619c3d2484293b81e09e3b34497f3c50b62d3c0c6a8f3c5f0f4fbdac5753bd967a36bc444488bc3c1089bd4df04f3d14d9963c4583a8ba390e05bd6818e3ba12b97abd0e4a25bdab14223c6144c0bc8e8c8b3d05aa0cbd178c27bc8951233df2dc453ca28a813c053aa03af56f933c2d9d21bd693ea73c68cdb6bb0028a6bc76f73a3ce767ebbbe98ad83c39887a3b5ca3893db562b4bc9f393f3de082093d09ef7f3c65992c3c9529843dd0bf7c3ce4c794bdc49a543d3e759e3cd5afae3df40bd13cf426d8bccfe0363db405bbbcde6ce53c052893bc818543bc75ca8e3de4fe79bcece7c23c028d1abdad57d53b01b6093cb738d2bcd08c9fbde6f518bc69cdc13c0eab593a1e340bbd38323cbc6b1a1ebbbd39d33c7277f03c351e4f3d60c475bd3b0cab3cabe0a5bc17a1433d6961f83c67dc023cc5e108bd2d9810bd4bf59bbcbe9c37bd82ce193c84d9b03c532d98bcfcfdb2bbce1b8dbcb25ccd3c79166d3d948c056e756d7079948c0564747970659493948c02663494898887945294284b038c013c944e4e4e4affffffff4affffffff4b007494624b014d000286948c014394749452942e);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `sesi_absensi`
+--
+
+CREATE TABLE `sesi_absensi` (
+  `id` int NOT NULL,
+  `kelas_id` int NOT NULL,
+  `waktu_mulai` datetime DEFAULT NULL,
+  `waktu_selesai` datetime DEFAULT NULL,
+  `status_aktif` tinyint(1) NOT NULL DEFAULT '1'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+--
+-- Dumping data for table `sesi_absensi`
+--
+
+INSERT INTO `sesi_absensi` (`id`, `kelas_id`, `waktu_mulai`, `waktu_selesai`, `status_aktif`) VALUES
+(15, 1, '2025-10-14 05:34:25', '2025-10-14 05:34:36', 0),
+(16, 1, '2025-10-14 05:39:12', '2025-10-14 05:39:32', 0);
+
+--
+-- Indexes for dumped tables
+--
+
+--
+-- Indexes for table `kelas`
+--
+ALTER TABLE `kelas`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nama_kelas_UNIQUE` (`nama_kelas`);
+
+--
+-- Indexes for table `log_absensi`
+--
+ALTER TABLE `log_absensi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_log_absensi_mahasiswa_idx` (`nim_mahasiswa`),
+  ADD KEY `fk_log_absensi_sesi_idx` (`sesi_id`);
+
+--
+-- Indexes for table `mahasiswa`
+--
+ALTER TABLE `mahasiswa`
+  ADD PRIMARY KEY (`nim`),
+  ADD KEY `fk_mahasiswa_kelas_idx` (`kelas_id`);
+
+--
+-- Indexes for table `sesi_absensi`
+--
+ALTER TABLE `sesi_absensi`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `fk_sesi_absensi_kelas_idx` (`kelas_id`);
+
+--
+-- AUTO_INCREMENT for dumped tables
+--
+
+--
+-- AUTO_INCREMENT for table `kelas`
+--
+ALTER TABLE `kelas`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `log_absensi`
+--
+ALTER TABLE `log_absensi`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
+
+--
+-- AUTO_INCREMENT for table `sesi_absensi`
+--
+ALTER TABLE `sesi_absensi`
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+
+--
+-- Constraints for dumped tables
+--
+
+--
+-- Constraints for table `log_absensi`
+--
+ALTER TABLE `log_absensi`
+  ADD CONSTRAINT `fk_log_absensi_mahasiswa` FOREIGN KEY (`nim_mahasiswa`) REFERENCES `mahasiswa` (`nim`),
+  ADD CONSTRAINT `fk_log_absensi_sesi` FOREIGN KEY (`sesi_id`) REFERENCES `sesi_absensi` (`id`);
+
+--
+-- Constraints for table `mahasiswa`
+--
+ALTER TABLE `mahasiswa`
+  ADD CONSTRAINT `fk_mahasiswa_kelas` FOREIGN KEY (`kelas_id`) REFERENCES `kelas` (`id`);
+
+--
+-- Constraints for table `sesi_absensi`
+--
+ALTER TABLE `sesi_absensi`
+  ADD CONSTRAINT `fk_sesi_absensi_kelas` FOREIGN KEY (`kelas_id`) REFERENCES `kelas` (`id`);
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
